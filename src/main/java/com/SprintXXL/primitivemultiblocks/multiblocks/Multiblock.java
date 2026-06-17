@@ -1,5 +1,7 @@
 package com.SprintXXL.primitivemultiblocks.multiblocks;
 
+import com.SprintXXL.primitivemultiblocks.multiblocks.presets.ShapePreset;
+import com.SprintXXL.primitivemultiblocks.multiblocks.shared.Dimensions;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 
@@ -10,7 +12,7 @@ public class Multiblock {
     private final Block frameBlock;
     private final Block controllerBlock;
     private final BlockPos controllerOffset;
-    private final boolean isHollow;
+    private final ShapePreset preset;
 
     public Multiblock(
             String id,
@@ -18,14 +20,14 @@ public class Multiblock {
             Block frameBlock,
             Block controllerBlock,
             BlockPos controllerOffset,
-            boolean isHollow
+            ShapePreset preset
     ) {
         this.id = id;
         this.dimensions = dimensions;
         this.frameBlock = frameBlock;
         this.controllerBlock = controllerBlock;
         this.controllerOffset = controllerOffset;
-        this.isHollow = isHollow;
+        this.preset = preset;
     }
 
     public String getID() {
@@ -48,7 +50,7 @@ public class Multiblock {
         return controllerOffset;
     }
 
-    public boolean isHollow() {
-        return isHollow;
+    public ShapePreset getPreset() {
+        return preset;
     }
 }

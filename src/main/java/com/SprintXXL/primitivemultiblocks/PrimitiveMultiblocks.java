@@ -1,5 +1,9 @@
 package com.SprintXXL.primitivemultiblocks;
 
+import com.SprintXXL.primitivemultiblocks.events.MultiblockBreakHandler;
+import com.SprintXXL.primitivemultiblocks.events.MultiblockInteractionHandler;
+import com.SprintXXL.primitivemultiblocks.multiblocks.MultiblockRegistry;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
@@ -14,5 +18,10 @@ public class PrimitiveMultiblocks {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+
+        MinecraftForge.EVENT_BUS.register(new MultiblockBreakHandler());
+        MinecraftForge.EVENT_BUS.register(new MultiblockInteractionHandler());
+
+        MultiblockRegistry.init();
     }
 }

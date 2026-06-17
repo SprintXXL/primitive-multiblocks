@@ -1,4 +1,4 @@
-package com.SprintXXL.primitivemultiblocks.multiblocks;
+package com.SprintXXL.primitivemultiblocks.multiblocks.definitions;
 
 public final class MultiblockIDs {
 
