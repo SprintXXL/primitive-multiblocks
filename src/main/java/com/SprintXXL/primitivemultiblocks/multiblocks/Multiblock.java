@@ -12,6 +12,7 @@ public class Multiblock {
     private final Block frameBlock;
     private final Block controllerBlock;
     private final BlockPos controllerOffset;
+    private final boolean allowsWallSharing;
     private final ShapePreset preset;
 
     public Multiblock(
@@ -20,6 +21,7 @@ public class Multiblock {
             Block frameBlock,
             Block controllerBlock,
             BlockPos controllerOffset,
+            boolean allowsWallSharing,
             ShapePreset preset
     ) {
         this.id = id;
@@ -27,6 +29,7 @@ public class Multiblock {
         this.frameBlock = frameBlock;
         this.controllerBlock = controllerBlock;
         this.controllerOffset = controllerOffset;
+        this.allowsWallSharing = allowsWallSharing;
         this.preset = preset;
     }
 
@@ -48,6 +51,10 @@ public class Multiblock {
 
     public BlockPos getControllerOffset() {
         return controllerOffset;
+    }
+
+    public boolean allowsWallSharing() {
+        return allowsWallSharing;
     }
 
     public ShapePreset getPreset() {

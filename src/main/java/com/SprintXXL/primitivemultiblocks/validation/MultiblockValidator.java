@@ -1,7 +1,9 @@
 package com.SprintXXL.primitivemultiblocks.validation;
 
+import com.SprintXXL.primitivemultiblocks.formation.FormedMultiblockManager;
 import com.SprintXXL.primitivemultiblocks.multiblocks.Multiblock;
 import com.SprintXXL.primitivemultiblocks.multiblocks.shared.Dimensions;
+import com.SprintXXL.primitivemultiblocks.shared.MultiblockHelper;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
@@ -9,7 +11,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import static com.SprintXXL.primitivemultiblocks.shared.MultiblockHelper.rotateLocalPos;
 
 public class MultiblockValidator {
 
@@ -21,12 +27,11 @@ public class MultiblockValidator {
     ) {
 
         List<ValidationError> errors = new ArrayList<>();
+        Set<BlockPos> occupiedPositions = new HashSet<>();
 
         Dimensions dimensions = multiblock.getDimensions();
 
-        BlockPos rotatedControllerOffset = rotateLocalPos(multiblock.getControllerOffset(), facing, dimensions);
-
-        BlockPos origin = controllerWorldPos.subtract(rotatedControllerOffset);
+        BlockPos origin = MultiblockHelper.getOrigin(controllerWorldPos, multiblock, facing);
 
         for (int x = 0; x < dimensions.getWidth(); x++) {
             for (int y = 0; y < dimensions.getHeight(); y++) {
@@ -35,7 +40,22 @@ public class MultiblockValidator {
                     BlockPos localPos = new BlockPos(x,y,z);
 
                     BlockPos rotatedLocalPos = rotateLocalPos(localPos, facing, dimensions);
+
                     BlockPos worldPos = origin.add(rotatedLocalPos);
+
+                    occupiedPositions.add(worldPos);
+
+                    if (!multiblock.allowsWallSharing() && FormedMultiblockManager.getFormedMultiblock(worldPos) != null) {
+
+                        return new ValidationResult(
+                                false,
+                                errors,
+                                "Position already belongs to another formed multiblock",
+                                origin,
+                                facing,
+                                occupiedPositions
+                        );
+                    }
 
                     Block expected;
 
@@ -66,12 +86,11 @@ public class MultiblockValidator {
         }
 
         if (!errors.isEmpty()) {
-            return new ValidationResult(false, errors, facing, origin);
+            return new ValidationResult(false, errors, "Structure does not match definition", origin, facing, occupiedPositions);
         }
 
-        return new ValidationResult(true, errors, facing, origin);
+        return new ValidationResult(true, errors, "", origin, facing, occupiedPositions);
     }
-
 
     private static boolean isOuterFrame(
             int x,
@@ -82,33 +101,5 @@ public class MultiblockValidator {
         return x == 0 || x == dimensions.getWidth() - 1 ||
                 y == 0 || y == dimensions.getHeight() - 1 ||
                 z == 0 || z == dimensions.getDepth() - 1;
-    }
-
-    private static BlockPos rotateLocalPos(
-            BlockPos localPos,
-            EnumFacing facing,
-            Dimensions dimensions
-    ) {
-
-        int x = localPos.getX();
-        int y = localPos.getY();
-        int z = localPos.getZ();
-
-        int maxX = dimensions.getWidth() - 1;
-
-        switch (facing) {
-
-            case NORTH:
-                return new BlockPos(x, y, -z);
-            case SOUTH:
-                return new BlockPos(maxX - x, y, z);
-            case EAST:
-                return new BlockPos(z, y, x);
-            case WEST:
-                return new BlockPos(-z, y, maxX - x);
-
-            default:
-                return new BlockPos(x, y, -z);
-        }
     }
 }

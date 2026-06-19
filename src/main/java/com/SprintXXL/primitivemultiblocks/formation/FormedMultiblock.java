@@ -3,22 +3,27 @@ package com.SprintXXL.primitivemultiblocks.formation;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 
+import java.util.Collections;
 import java.util.Objects;
+import java.util.Set;
 
 public class FormedMultiblock {
 
     private final String id;
     private final BlockPos origin;
     private final EnumFacing facing;
+    private final Set<BlockPos> occupiedPositions;
 
     public FormedMultiblock(
             String id,
             BlockPos origin,
-            EnumFacing facing
+            EnumFacing facing,
+            Set<BlockPos> occupiedPositions
     ) {
         this.id = id;
         this.origin = origin;
         this.facing = facing;
+        this.occupiedPositions = occupiedPositions;
     }
 
     public String getFormedID() {
@@ -31,6 +36,10 @@ public class FormedMultiblock {
 
     public EnumFacing getFacing() {
         return facing;
+    }
+
+    public Set<BlockPos> getOccupiedPositions() {
+        return Collections.unmodifiableSet(occupiedPositions);
     }
 
     @Override

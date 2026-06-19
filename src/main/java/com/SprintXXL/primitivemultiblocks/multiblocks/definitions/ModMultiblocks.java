@@ -19,6 +19,7 @@ public final class ModMultiblocks {
                     Blocks.COBBLESTONE,
                     Blocks.NETHER_BRICK,
                     new BlockPos(1, 1, 0),
+                    true,
                     new CubePreset(
                             true,
                             new Dimensions(1, 1, 1)

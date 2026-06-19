@@ -1,29 +1,45 @@
 package com.SprintXXL.primitivemultiblocks.formation;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import net.minecraft.util.math.BlockPos;
+
+import java.util.*;
 
 public final class FormedMultiblockManager {
 
     private FormedMultiblockManager() {}
 
-    private static final Set<FormedMultiblock> FORMED_MULTIBLOCKS =
+    private static final Map<BlockPos, FormedMultiblock> FORMED_MULTIBLOCKS =
+            new HashMap<>();
+
+    private static final Set<FormedMultiblock> ALL_FORMED_MULTIBLOCKS =
             new HashSet<>();
 
+    public static FormedMultiblock getFormedMultiblock(BlockPos pos) {
+        return FORMED_MULTIBLOCKS.get(pos);
+    }
+
     public static Set<FormedMultiblock> getAllFormedMultiblocks() {
-        return Collections.unmodifiableSet(FORMED_MULTIBLOCKS);
+        return Collections.unmodifiableSet(ALL_FORMED_MULTIBLOCKS);
     }
 
     public static void registerFormedMultiblock(FormedMultiblock formedMultiblock) {
-        FORMED_MULTIBLOCKS.add(formedMultiblock);
+        ALL_FORMED_MULTIBLOCKS.add(formedMultiblock);
+
+        for (BlockPos pos : formedMultiblock.getOccupiedPositions()) {
+            FORMED_MULTIBLOCKS.put(pos, formedMultiblock);
+        }
     }
 
     public static void removeFormedMultiblock(FormedMultiblock formedMultiblock) {
-        FORMED_MULTIBLOCKS.remove(formedMultiblock);
+        ALL_FORMED_MULTIBLOCKS.remove(formedMultiblock);
+
+        for (BlockPos pos : formedMultiblock.getOccupiedPositions()) {
+            FORMED_MULTIBLOCKS.remove(pos, formedMultiblock);
+        }
     }
 
     public static void clear() {
+        ALL_FORMED_MULTIBLOCKS.clear();
         FORMED_MULTIBLOCKS.clear();
     }
 }

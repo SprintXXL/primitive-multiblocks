@@ -2,6 +2,7 @@ package com.SprintXXL.primitivemultiblocks.events;
 
 import com.SprintXXL.primitivemultiblocks.formation.FormedMultiblock;
 import com.SprintXXL.primitivemultiblocks.formation.FormedMultiblockManager;
+import com.SprintXXL.primitivemultiblocks.formation.world.MultiblockWorldData;
 import com.SprintXXL.primitivemultiblocks.multiblocks.Multiblock;
 import com.SprintXXL.primitivemultiblocks.multiblocks.MultiblockRegistry;
 import com.SprintXXL.primitivemultiblocks.validation.MultiblockValidator;
@@ -9,7 +10,10 @@ import com.SprintXXL.primitivemultiblocks.validation.ValidationError;
 import com.SprintXXL.primitivemultiblocks.validation.ValidationResult;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
@@ -19,18 +23,25 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class MultiblockInteractionHandler {
 
     @SubscribeEvent
-    public void onLeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+    public void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
 
         World world = event.getWorld();
+        EntityPlayer player = event.getEntityPlayer();
 
         if (world.isRemote) {
             return;
         }
 
+        if (event.getHand() != EnumHand.MAIN_HAND) {
+            return;
+        }
+
+        if (!isFormationHammer(player.getHeldItemMainhand())) {
+            return;
+        }
+
         BlockPos clickedPos = event.getPos();
         Block clickedBlock = world.getBlockState(clickedPos).getBlock();
-
-        EntityPlayer player = event.getEntityPlayer();
 
         for (Multiblock multiblock : MultiblockRegistry.getAllMultiblocks()) {
 
@@ -48,10 +59,15 @@ public class MultiblockInteractionHandler {
                                 new FormedMultiblock(
                                         multiblock.getID(),
                                         result.getOrigin(),
-                                        result.getFacing()
+                                        result.getFacing(),
+                                        result.getOccupiedPositions()
                                 );
 
                         FormedMultiblockManager.registerFormedMultiblock(formedMultiblock);
+
+                        MultiblockWorldData.get(world).markDirty();
+
+                        sendMessage(player, "World data loaded/world");
 
                         sendMessage(player, "Formed Count: " + FormedMultiblockManager.getAllFormedMultiblocks().size());
 
@@ -63,10 +79,16 @@ public class MultiblockInteractionHandler {
                     }
                 }
 
-                sendMessage(player, "Invalid Multiblock: " + bestResult.getErrors().size() + " errors");
+                if (bestResult.getErrors().isEmpty()) {
 
-                for (int i = 0; i < bestResult.getErrors().size(); i++) {
-                    sendErrorMessage(player, bestResult.getErrors().get(i), i);
+                    sendMessage(player, bestResult.getFailureReason());
+                } else {
+
+                    sendMessage(player, "Invalid Multiblock: " + bestResult.getErrors().size() + " errors");
+
+                    for (int i = 0; i < bestResult.getErrors().size(); i++) {
+                        sendErrorMessage(player, bestResult.getErrors().get(i), i);
+                    }
                 }
 
                 return;
@@ -102,5 +124,15 @@ public class MultiblockInteractionHandler {
             String message
     ) {
         player.sendMessage(new TextComponentString(message));
+    }
+
+    private static boolean isFormationHammer(ItemStack stack) {
+
+        if (stack.isEmpty()) {
+            return false;
+        }
+
+        return new ResourceLocation("primitiveutilitytools", "hammer")
+                .equals(stack.getItem().getRegistryName());
     }
 }
