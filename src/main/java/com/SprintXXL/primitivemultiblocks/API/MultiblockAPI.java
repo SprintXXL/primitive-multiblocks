@@ -1,10 +1,14 @@
 package com.SprintXXL.primitivemultiblocks.API;
 
+import com.SprintXXL.primitivemultiblocks.formation.FormedMultiblock;
+import com.SprintXXL.primitivemultiblocks.formation.FormedMultiblockManager;
 import com.SprintXXL.primitivemultiblocks.multiblocks.Multiblock;
 import com.SprintXXL.primitivemultiblocks.multiblocks.MultiblockRegistry;
 import com.SprintXXL.primitivemultiblocks.validation.MultiblockValidator;
 import com.SprintXXL.primitivemultiblocks.validation.ValidationResult;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -35,9 +39,21 @@ public final class MultiblockAPI {
     public static boolean isFormed(
             World world,
             BlockPos controllerPos,
-            String multiblockID,
-            EnumFacing facing
+            String multiblockID
     ) {
-        return validate(world, controllerPos, multiblockID, facing).isValid();
+
+        FormedMultiblock formed = FormedMultiblockManager.getFormedMultiblock(controllerPos);
+
+        return formed != null && formed.getFormedID().equals(multiblockID);
+    }
+
+    public static boolean isFormationHammer(ItemStack stack) {
+
+        if (stack.isEmpty()) {
+            return false;
+        }
+
+        return new ResourceLocation("primitiveutilitytools", "hammer")
+                .equals(stack.getItem().getRegistryName());
     }
 }

@@ -4,9 +4,9 @@ import com.SprintXXL.primitivemultiblocks.formation.FormedMultiblockManager;
 import com.SprintXXL.primitivemultiblocks.multiblocks.Multiblock;
 import com.SprintXXL.primitivemultiblocks.multiblocks.shared.Dimensions;
 import com.SprintXXL.primitivemultiblocks.shared.MultiblockHelper;
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -57,7 +57,7 @@ public class MultiblockValidator {
                         );
                     }
 
-                    Block expected;
+                    ResourceLocation expected;
 
                     if (localPos.equals(multiblock.getControllerOffset())) {
                         expected = multiblock.getControllerBlock();
@@ -68,12 +68,12 @@ public class MultiblockValidator {
                     }
 
                     else {
-                        expected = Blocks.AIR;
+                        expected = Blocks.AIR.getRegistryName();
                     }
 
-                    Block actual = world.getBlockState(worldPos).getBlock();
+                    ResourceLocation actual = world.getBlockState(worldPos).getBlock().getRegistryName();
 
-                    if (actual != expected) {
+                    if (!expected.equals(actual)) {
                         errors.add(new ValidationError(
                                 localPos,
                                 worldPos,

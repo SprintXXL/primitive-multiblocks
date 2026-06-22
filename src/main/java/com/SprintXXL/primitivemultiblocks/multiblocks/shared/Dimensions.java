@@ -27,4 +27,8 @@ public class Dimensions {
     public int getDepth() {
         return depth;
     }
+
+    public static Dimensions dims(int x, int y, int z) {
+        return new Dimensions(x, y, z);
+    }
 }

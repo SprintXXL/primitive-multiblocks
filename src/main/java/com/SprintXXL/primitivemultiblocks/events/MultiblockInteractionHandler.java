@@ -8,9 +8,7 @@ import com.SprintXXL.primitivemultiblocks.multiblocks.MultiblockRegistry;
 import com.SprintXXL.primitivemultiblocks.validation.MultiblockValidator;
 import com.SprintXXL.primitivemultiblocks.validation.ValidationError;
 import com.SprintXXL.primitivemultiblocks.validation.ValidationResult;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
@@ -19,6 +17,8 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import static com.SprintXXL.primitivemultiblocks.API.MultiblockAPI.isFormationHammer;
 
 public class MultiblockInteractionHandler {
 
@@ -41,11 +41,11 @@ public class MultiblockInteractionHandler {
         }
 
         BlockPos clickedPos = event.getPos();
-        Block clickedBlock = world.getBlockState(clickedPos).getBlock();
+        ResourceLocation clickedBlock = world.getBlockState(clickedPos).getBlock().getRegistryName();
 
         for (Multiblock multiblock : MultiblockRegistry.getAllMultiblocks()) {
 
-            if (clickedBlock == multiblock.getControllerBlock()) {
+            if (clickedBlock.equals(multiblock.getControllerBlock())) {
 
                 ValidationResult bestResult = null;
 
@@ -114,8 +114,8 @@ public class MultiblockInteractionHandler {
         sendMessage(player, "[Error " + (index + 1) + "]");
         sendMessage(player, "LocalPos: " + localX + ", " + localY + ", " + localZ);
         sendMessage(player, "WorldPos: " + worldX + ", " + worldY + ", " + worldZ);
-        sendMessage(player, "Expected: " + error.getExpected().getRegistryName());
-        sendMessage(player, "Found: " + error.getActual().getRegistryName());
+        sendMessage(player, "Expected: " + error.getExpected());
+        sendMessage(player, "Found: " + error.getActual());
 
     }
 
@@ -124,15 +124,5 @@ public class MultiblockInteractionHandler {
             String message
     ) {
         player.sendMessage(new TextComponentString(message));
-    }
-
-    private static boolean isFormationHammer(ItemStack stack) {
-
-        if (stack.isEmpty()) {
-            return false;
-        }
-
-        return new ResourceLocation("primitiveutilitytools", "hammer")
-                .equals(stack.getItem().getRegistryName());
     }
 }

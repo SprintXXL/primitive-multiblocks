@@ -1,20 +1,20 @@
 package com.SprintXXL.primitivemultiblocks.validation;
 
-import net.minecraft.block.Block;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
 public class ValidationError {
 
     private final BlockPos localPos;
     private final BlockPos worldPos;
-    private final Block expected;
-    private final Block actual;
+    private final ResourceLocation expected;
+    private final ResourceLocation actual;
 
     public ValidationError(
             BlockPos localPos,
             BlockPos worldPos,
-            Block expected,
-            Block actual
+            ResourceLocation expected,
+            ResourceLocation actual
     ) {
         this.localPos = localPos;
         this.worldPos = worldPos;
@@ -30,11 +30,11 @@ public class ValidationError {
         return worldPos;
     }
 
-    public Block getExpected() {
+    public ResourceLocation getExpected() {
         return expected;
     }
 
-    public Block getActual() {
+    public ResourceLocation getActual() {
         return actual;
     }
 }

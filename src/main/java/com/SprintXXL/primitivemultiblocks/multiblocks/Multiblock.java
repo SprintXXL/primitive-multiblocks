@@ -2,15 +2,15 @@ package com.SprintXXL.primitivemultiblocks.multiblocks;
 
 import com.SprintXXL.primitivemultiblocks.multiblocks.presets.ShapePreset;
 import com.SprintXXL.primitivemultiblocks.multiblocks.shared.Dimensions;
-import net.minecraft.block.Block;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
 public class Multiblock {
 
     private final String id;
     private final Dimensions dimensions;
-    private final Block frameBlock;
-    private final Block controllerBlock;
+    private final ResourceLocation frameBlock;
+    private final ResourceLocation controllerBlock;
     private final BlockPos controllerOffset;
     private final boolean allowsWallSharing;
     private final ShapePreset preset;
@@ -18,8 +18,8 @@ public class Multiblock {
     public Multiblock(
             String id,
             Dimensions dimensions,
-            Block frameBlock,
-            Block controllerBlock,
+            ResourceLocation frameBlock,
+            ResourceLocation controllerBlock,
             BlockPos controllerOffset,
             boolean allowsWallSharing,
             ShapePreset preset
@@ -41,11 +41,11 @@ public class Multiblock {
         return dimensions;
     }
 
-    public Block getFrameBlock() {
+    public ResourceLocation getFrameBlock() {
         return frameBlock;
     }
 
-    public Block getControllerBlock() {
+    public ResourceLocation getControllerBlock() {
         return controllerBlock;
     }
 
@@ -59,5 +59,9 @@ public class Multiblock {
 
     public ShapePreset getPreset() {
         return preset;
+    }
+
+    public static BlockPos offset(int x, int y, int z) {
+        return new BlockPos(x, y, z);
     }
 }
