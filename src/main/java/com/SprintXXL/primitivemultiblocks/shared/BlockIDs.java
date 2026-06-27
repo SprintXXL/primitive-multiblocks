@@ -13,7 +13,7 @@ public final class BlockIDs {
             new ResourceLocation("minecraft", "cobblestone");
 
     public static final ResourceLocation TEST_CONTROLLER =
-            new ResourceLocation("minecraft", "glowstone");
+            new ResourceLocation(ID, "test_factory_controller");
 
     // BLOCKS \\
     public static final ResourceLocation COKE_OVEN_BRICK =

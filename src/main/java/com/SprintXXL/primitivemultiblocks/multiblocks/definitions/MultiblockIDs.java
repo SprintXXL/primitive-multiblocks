@@ -4,7 +4,9 @@ public final class MultiblockIDs {
 
     private MultiblockIDs() {}
 
-    public static final String COKE_OVEN = "coke_oven";
+    // TEST \\
+    public static final String TEST_FACTORY = "test_factory";
 
-    public static final String TEST_MULTIBLOCK = "test_multiblock";
+    // MULTIBLOCKS \\
+    public static final String COKE_OVEN = "coke_oven";
 }
