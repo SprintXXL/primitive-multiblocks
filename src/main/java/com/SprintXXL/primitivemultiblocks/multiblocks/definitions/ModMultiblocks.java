@@ -3,9 +3,9 @@ package com.SprintXXL.primitivemultiblocks.multiblocks.definitions;
 import com.SprintXXL.primitivemultiblocks.multiblocks.presets.CubePreset;
 import com.SprintXXL.primitivemultiblocks.multiblocks.shared.Dimensions;
 import com.SprintXXL.primitivemultiblocks.multiblocks.Multiblock;
+import com.sprintxxl.ascenthub.definitions.DefinitionRegistrar;
 
 import static com.SprintXXL.primitivemultiblocks.multiblocks.Multiblock.offset;
-import static com.SprintXXL.primitivemultiblocks.multiblocks.MultiblockRegistry.register;
 import static com.SprintXXL.primitivemultiblocks.shared.BlockIDs.*;
 import static com.SprintXXL.primitivemultiblocks.multiblocks.shared.Dimensions.dims;
 
@@ -13,13 +13,13 @@ public final class ModMultiblocks {
 
     private ModMultiblocks() {}
 
-    public static void initModMultiblocks() {
+    public static void initMultiblockDefinitions(DefinitionRegistrar<Multiblock> registrar) {
 
         // TEST \\
-        register(TEST_FACTORY);
+        registrar.register(TEST_FACTORY);
 
         // MULTIBLOCKS \\
-        register(COKE_OVEN);
+        registrar.register(COKE_OVEN);
     }
 
     // TEST \\

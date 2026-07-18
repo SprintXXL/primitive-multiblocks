@@ -2,10 +2,11 @@ package com.SprintXXL.primitivemultiblocks.multiblocks;
 
 import com.SprintXXL.primitivemultiblocks.multiblocks.presets.ShapePreset;
 import com.SprintXXL.primitivemultiblocks.multiblocks.shared.Dimensions;
+import com.sprintxxl.ascenthub.definitions.AscentDefinition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
-public class Multiblock {
+public class Multiblock implements AscentDefinition {
 
     private final String id;
     private final Dimensions dimensions;
@@ -33,6 +34,7 @@ public class Multiblock {
         this.preset = preset;
     }
 
+    @Override
     public String getID() {
         return id;
     }

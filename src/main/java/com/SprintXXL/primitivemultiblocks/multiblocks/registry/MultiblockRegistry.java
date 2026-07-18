@@ -1,8 +1,10 @@
-package com.SprintXXL.primitivemultiblocks.multiblocks;
+package com.SprintXXL.primitivemultiblocks.multiblocks.registry;
+
+import com.SprintXXL.primitivemultiblocks.multiblocks.Multiblock;
 
 import java.util.*;
 
-import static com.SprintXXL.primitivemultiblocks.multiblocks.definitions.ModMultiblocks.initModMultiblocks;
+import static com.SprintXXL.primitivemultiblocks.multiblocks.definitions.ModMultiblocks.initMultiblockDefinitions;
 
 public final class MultiblockRegistry {
 
@@ -33,6 +35,7 @@ public final class MultiblockRegistry {
     }
 
     public static void init() {
-        initModMultiblocks();
+
+        initMultiblockDefinitions(MultiblockRegistry::register);
     }
 }

@@ -3,7 +3,7 @@ package com.SprintXXL.primitivemultiblocks.API;
 import com.SprintXXL.primitivemultiblocks.formation.FormedMultiblock;
 import com.SprintXXL.primitivemultiblocks.formation.FormedMultiblockManager;
 import com.SprintXXL.primitivemultiblocks.multiblocks.Multiblock;
-import com.SprintXXL.primitivemultiblocks.multiblocks.MultiblockRegistry;
+import com.SprintXXL.primitivemultiblocks.multiblocks.registry.MultiblockRegistry;
 import com.SprintXXL.primitivemultiblocks.validation.MultiblockValidator;
 import com.SprintXXL.primitivemultiblocks.validation.ValidationResult;
 import net.minecraft.item.ItemStack;
